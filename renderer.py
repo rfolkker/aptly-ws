@@ -1,12 +1,34 @@
 from jinja2 import Template
 import falcon
 import os
+from os import listdir
+from os.path import isfile, join
+class script:
+   config = None
+
+   def __init__(self, config):
+      self.config = config
+
+   def on_get(self, req, resp, script):
+    """Handles GET requests"""
+    resp.content_type = falcon.MEDIA_JS
+    with open(f"Scripts/{script}","r") as fp:
+      resp.body = fp.read()
 
 class ui:
    config = None
-   routes = {"index":"Template/index.html"}
+   routes = {}
+   path_root = "Template/"
+
    def __init__(self, config):
       self.config = config
+      self.path_root = self.config.get("templates", self.path_root)
+      for f in listdir(self.path_root):
+         if isfile(join(self.path_root, f)) and f.endswith(".html"):
+            print(f"{f} found")
+            print("Creating dictionary item {}".format({f[:-5]: join(self.path_root, f)}))
+            self.routes[f[:-5]] = join(self.path_root, f)
+      # self.routes = {f[:-5]:join(self.path_root, f) for f in listdir(self.path_root) if isfile(join(self.path_root, f) and f.endswith(".html"))}
 
    def add_template(self, name, filename):
      self.routes[name] = filename
@@ -20,11 +42,10 @@ class ui:
       return result
    
    def validate_page(self, page):
-      is_valid = False
-      path_root = self.config.get("templates", "Template/")
-      test_path = f"{path_root}{page}.html"
-      if os.path.isfile(test_path):
-         is_valid = not os.path.islink(test_path)
+      if not (page in self.routes.keys()):
+         return False # Short circuit
+      if os.path.isfile(self.routes[page]):
+         is_valid = not os.path.islink(self.routes[page])
 
       return is_valid
    
