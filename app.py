@@ -4,20 +4,13 @@ from Model import RootResource
 import Model
 
 import renderer
-class RootResource:
-   def on_get(self, req, resp):
-    """Handles GET requests"""
-    
-    resp.status = falcon.HTTP_200
-    resp.content_type = falcon.MEDIA_TEXT
-    resp.text = (
-        'Hello World'
-    )
+import config
+
+app_config = config.ConfigHandler("config.ini")
+
 app = falcon.App()
-template = renderer.ui()
+template = renderer.ui(app_config.config)
 
-root = Model.RootResource.RootResource(template, "root", "Template/index.html")
-
-app.add_route('/', root)
+app.add_route("/{page}", template)
 if __name__ == '__main__':
-   serve(app, host='0.0.0.0', port=8000)
+   serve(app, host=app_config.config.get("bind_address",'0.0.0.0'), port=int(app_config.config.get("port",8080)))
