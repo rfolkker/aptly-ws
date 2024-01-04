@@ -1,0 +1,49 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Aptly Web Server{% endblock %}</title>
+</head>
+
+<body>
+  <header>
+    <h1>Aptly Web Server</h1>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav">
+          <li><a href="/">Home</a></li>
+          <li><a href="/cert">Certificate Management</a></li>
+          <li><a href="/package">Package Management</a></li>
+          <li><a href="/repo">Repository Management</a></li>
+          <li><a href="/user">User Management</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <div class="container">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <center>
+            {% block content %}{% endblock %}
+          </center>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!-- Bootstrap Footer -->
+  <footer class="bg-dark text-light py-3">
+    <div class="container text-center">
+      <p>&copy; 2024 Darnell Otterson</p>
+    </div>
+  </footer>
+</body>
+
+</html>
