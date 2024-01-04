@@ -21,5 +21,8 @@ app.add_route("/{page}", template)
 app.add_route("/static/{script}",script_handler)
 app.add_route('/favicon.ico', favicon_handler)
 
-if __name__ == '__main__':
+def main():
    serve(app, host=app_config.config.get("bind_address",'0.0.0.0'), port=int(app_config.config.get("port",8080)))
+
+if __name__ == '__main__':
+    main()

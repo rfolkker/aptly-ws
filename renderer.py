@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from jinja2 import Environment, FileSystemLoader
 import falcon
 import os
@@ -89,3 +91,10 @@ class ui:
         else:
               resp.status = falcon.HTTP_200
               resp.text = result
+
+# This file has no main
+def main():
+    pass
+
+if __name__ == '__main__':
+    main()
