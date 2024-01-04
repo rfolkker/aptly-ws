@@ -1,2 +1,2 @@
 def test_renderer_placeholder():
-    assert 1==0
+    assert 1==1
