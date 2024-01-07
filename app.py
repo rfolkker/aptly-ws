@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+from aptly_wa import api
 
 # WSGI
 from waitress import serve
