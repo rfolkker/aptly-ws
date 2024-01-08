@@ -1,6 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>{{testing}}</h2>
-    <p>This is the content for Repository Management.</p>
-{% endblock %}
+<table width="100%" border="1">
+  <tr>
+    <td class="c1">Name</td>
+    <td class="c2">Comment</td>
+    <td class="c3">Distribution</td>
+    <td class="c4">Component</td>
+  </tr>
+  {% for item in page_data %}
+  <TR>
+     <TD class="c1">{{item.Name}}</TD>
+     <TD class="c2">{{item.Comment}}</TD>
+     <TD class="c3"><SPAN>{{item.DefaultDistribution}}</SPAN></TD>
+     <TD class="c4"><SPAN>{{item.DefaultComponent}}</SPAN></TD>
+  </TR>
+  {% endfor %}
+  </table>
+  {% endblock %}

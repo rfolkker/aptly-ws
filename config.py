@@ -8,11 +8,16 @@ class ConfigHandler:
         # Implement your logic to load configuration from the file
         # For simplicity, let's assume a basic key-value configuration file
         config = {}
+        section = "global"
         try:
             with open(file_path, 'r') as file:
                 for line in file:
+                    if line.startswith("["):
+                        section = line[1:].split("]")[0]
+                        config[section] = {}
+                        continue
                     key, value = line.strip().split('=')
-                    config[key.strip()] = value.strip()
+                    config[section][key.strip()] = value.strip()
         except FileNotFoundError:
             print(f"Config file '{file_path}' not found. Using default configuration.")
         return config

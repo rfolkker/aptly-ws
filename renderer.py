@@ -5,6 +5,7 @@ import falcon
 import os
 from os import listdir
 from os.path import isfile, join
+from Model import repo
 
 class script:
    config = None
@@ -12,20 +13,20 @@ class script:
 
    def __init__(self, config):
       self.config = config
-      self.script_root = self.config.get("scripts", self.script_root)
+      self.script_root = self.config.get("page").get("scripts", self.script_root)
 
    def on_get(self, req, resp, script):
     resp.content_type = falcon.MEDIA_JS
     script_file = join(self.script_root,script)
     with open(script_file,"r") as fp:
-      resp.body = fp.read()
+      resp.text = fp.read()
 
 class FaviconResource:
    config = None
    favicon_file = "favicon.ico"
    def __init__(self, config):
       self.config = config
-      self.favicon_file = join(self.config.get("images", "images/"), self.config.get("favicon", self.favicon_file))
+      self.favicon_file = join(self.config.get("images", "images/"), self.config.get('ui').get("favicon", self.favicon_file))
 
    def on_get(self, req, resp):
       # Replace 'path/to/favicon.ico' with the actual path to your favicon file
@@ -40,7 +41,7 @@ class ui:
    template_env = None
    def __init__(self, config):
       self.config = config
-      self.path_root = self.config.get("templates", self.path_root)
+      self.path_root = self.config.get("page").get("templates", self.path_root)
 
       self.template_env = Environment(loader=FileSystemLoader(self.path_root))
 
@@ -85,7 +86,10 @@ class ui:
       if not self.validate_page(page):
           resp.status = falcon.HTTP_404
       else: # We have a valid page
-        result = self.get_page(page, {"testing":"Hello World"})
+        # repo = api.Repo(self.config.config.get("api").get("aptly_url"))
+
+        page_data = repo.get_repos(self.config)
+        result = self.get_page(page, {"page_data":page_data})
         if result is None:
               resp.status = falcon.HTTP_500
         else:
