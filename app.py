@@ -16,9 +16,11 @@ app_config = config.ConfigHandler("config.ini")
 
 app = falcon.App()
 template = renderer.ui(app_config.config)
+api_handler = renderer.api(app_config.config)
 script_handler = renderer.script(app_config.config)
 favicon_handler = renderer.FaviconResource(app_config.config)
 app.add_route("/{page}", template)
+app.add_route("/api/{function_name}", api_handler)
 app.add_route("/static/{script}",script_handler)
 app.add_route('/favicon.ico', favicon_handler)
 def main():

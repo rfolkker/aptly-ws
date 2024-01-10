@@ -5,7 +5,38 @@ import falcon
 import os
 from os import listdir
 from os.path import isfile, join
-from Model import repo
+from Model import data
+import json
+
+class api:
+   config = None
+   script_root = "scripts/"
+
+   def __init__(self, config):
+      self.config = config
+      self.script_root = self.config.get("page").get("scripts", self.script_root)
+
+   def on_get(self, req, resp, function_name):
+    resp.content_type = falcon.MEDIA_JSON
+    resp.text = json.dumps({"function": function_name,"action":"get"})
+    print(f"Get function called for {function_name}")
+
+
+   def on_post(self, req, resp, function_name):
+    resp.content_type = falcon.MEDIA_JSON
+    resp.text = json.dumps({"function": function_name,"action":"post"})
+    print(f"Post function called for {function_name}")
+
+   def on_patch(self, req, resp, function_name):
+    resp.content_type = falcon.MEDIA_JSON
+    resp.text = json.dumps({"function": function_name,"action":"patch"})
+    print(f"Patch function called for {function_name}")
+
+   def on_delete(self, req, resp, function_name):
+    resp.content_type = falcon.MEDIA_JSON
+    resp.text = json.dumps({"function": function_name,"action":"delete"})
+    print(f"Delete function called for {function_name}")
+
 
 class script:
    config = None
@@ -35,6 +66,7 @@ class FaviconResource:
       resp.content_type = falcon.MEDIA_PNG  # Set the correct content type for your favicon
 
 class ui:
+   page_data = None
    config = None
    routes = {}
    path_root = "templates/"
@@ -42,7 +74,7 @@ class ui:
    def __init__(self, config):
       self.config = config
       self.path_root = self.config.get("page").get("templates", self.path_root)
-
+      self.page_data = data.Data(config)
       self.template_env = Environment(loader=FileSystemLoader(self.path_root))
 
       for f in listdir(self.path_root):
@@ -81,15 +113,15 @@ class ui:
             resp.status = falcon.HTTP_500
       else:
             resp.status = falcon.HTTP_200
-            resp.body = result
+            resp.text = result
     else:
       if not self.validate_page(page):
           resp.status = falcon.HTTP_404
       else: # We have a valid page
         # repo = api.Repo(self.config.config.get("api").get("aptly_url"))
 
-        page_data = repo.get_repos(self.config)
-        result = self.get_page(page, {"page_data":page_data})
+        # page_data = repo.get_repos(self.config)
+        result = self.get_page(page, {"page_data":self.page_data.get_data(page)()})
         if result is None:
               resp.status = falcon.HTTP_500
         else:
