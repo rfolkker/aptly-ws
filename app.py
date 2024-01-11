@@ -1,4 +1,9 @@
 #!/usr/bin/python3
+##
+# @file aptly-ws/app.py.
+#
+# @brief    Application class
+
 from aptly_wa import api
 
 # WSGI
@@ -23,6 +28,15 @@ app.add_route("/{page}", template)
 app.add_route("/api/{function_name}", api_handler)
 app.add_route("/static/{script}",script_handler)
 app.add_route('/favicon.ico', favicon_handler)
+
+##
+# @fn   main()
+#
+# @brief    Main entry-point for this application
+#
+# @author   rfolkker
+# @date 1/10/2024
+
 def main():
    serve(app, host=app_config.config.get("ui").get("bind_address",'0.0.0.0'), port=int(app_config.config.get("ui").get("port",8080)))
 

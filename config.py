@@ -1,8 +1,36 @@
 #!/usr/bin/python3
+##
+# @file aptly-ws/config.py.
+#
+# @brief    Configuration Module
+
+##
+# @class    ConfigHandler
+#
+# @brief    A configuration handler.
+#
+# @author   rfolkker
+# @date 1/10/2024
+#
+# @param    self               The class instance that this method operates on.
+# @param    config_file_path   Full pathname of the configuration file.
 
 class ConfigHandler:
     def __init__(self, config_file_path):
         self.config = self.load_config(config_file_path)
+
+    ##
+    # @fn   load_config(self, file_path)
+    #
+    # @brief    Loads a configuration
+    #
+    # @author   rfolkker
+    # @date 1/10/2024
+    #
+    # @param    self        The class instance that this method operates on.
+    # @param    file_path   Full pathname of the file.
+    #
+    # @returns  The configuration data.
 
     def load_config(self, file_path):
         # Implement your logic to load configuration from the file
@@ -22,7 +50,15 @@ class ConfigHandler:
             print(f"Config file '{file_path}' not found. Using default configuration.")
         return config
 
-# This file has no main
+##
+# @fn   main()
+#
+# @brief    Main entry-point for this application
+#           This file has no main
+#
+# @author   rfolkker
+# @date 1/10/2024
+
 def main():
     pass
 
