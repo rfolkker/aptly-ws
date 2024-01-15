@@ -1,3 +1,4 @@
+aptly-wa @ git+https://github.com/rfolkker/aptly-wa.git@93977fb764f2af1e9f592b42820451f1ba41c75e
 certifi==2023.11.17
 charset-normalizer==3.3.2
 contourpy==1.2.0
