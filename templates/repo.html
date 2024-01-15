@@ -12,7 +12,7 @@
           </li>
           {% for item in page_data %}
           <li class="nav-item">
-            <a class="nav-link" href="#" data-toggle="tooltip" data-placement="right" title="{{item.DefaultComponent}}">
+            <a class="nav-link" id="nav_{{item.Name}}" onclick="handlenavClick('{{item.Name}}')" href="#" data-toggle="tooltip" data-placement="right" title="{{item.DefaultComponent}}">
               {{item.Name}}
             </a>
           </li>
@@ -24,9 +24,32 @@
 
     <!-- Main Content -->
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4" id="content">
-      Repo Contents go here
+      <table id="clickableTable" class="packagelist-table table table-bordered  table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Architecture</th>
+            <th>Version</th>
+            <th>Hash</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div>
+        <div><h3>Package Details:</h3></div>
+        <table id="packageDetails" class="description-table table table-bordered  table-striped">
+          <thead>
+            <tr>
+              <th width="20%">Property</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </main>
   </div>
 </div>
-
+<!-- Repo Scripts -->
+<script src="static/repopage.js" />
   {% endblock %}

@@ -6,11 +6,13 @@
 
 from jinja2 import Environment, FileSystemLoader
 import falcon
+from jsmin import jsmin
 import os
 from os import listdir
 from os.path import isfile, join
 from Model import data
 import json
+import aptly_wa
 
 ##
 # @class    api
@@ -25,11 +27,16 @@ import json
 
 class api:
    config = None
-   script_root = "scripts/"
-
+   api_url = ""
+   api_functions = {}
    def __init__(self, config):
       self.config = config
-      self.script_root = self.config.get("page").get("api", self.script_root)
+      api_url = self.config.get("api").get("aptly_url")
+      # This should be switched to a programatic way of creating
+      self.api_functions = {
+         "Repo":aptly_wa.api.Repo(api_url),
+         "Package":aptly_wa.api.Package(api_url)
+      }
 
    ##
    # @fn    on_get(self, req, resp, function_name)
@@ -46,7 +53,10 @@ class api:
 
    def on_get(self, req, resp, function_name):
     resp.content_type = falcon.MEDIA_JSON
-    resp.text = json.dumps({"function": function_name,"action":"get"})
+    api_call = self.api_functions.get(function_name, aptly_wa.api.API)
+    api_action = req.params.get("action","")
+    api_data = req.params
+    resp.text = json.dumps(api_call.run(api_action, api_data))
     print(f"Get function called for {function_name}")
 
    ##
@@ -114,14 +124,24 @@ class api:
 # @param    self     The class instance that this method operates on.
 # @param    config   Configuration dictionary.
 
-class script:
+class content:
    config = None
-   script_root = "scripts/"
-
+   content_root = "content/"
+   content_list = {}
+   content_types ={}
    def __init__(self, config):
       self.config = config
-      self.script_root = self.config.get("page").get("scripts", self.script_root)
-
+      self.content_root = self.config.get("page").get("content", self.content_root)
+      file_list = listdir(self.content_root)
+      # Load each script file into dictionary for proper loading
+      self.content_list = {
+         keyname:join(self.content_root, keyname) 
+         for keyname in file_list 
+         if isfile(join(self.content_root, keyname))}
+      ext_list = list(set([name.split(".")[-1] for name in file_list if not name.startswith("__")]))
+      # Currently only accepting js, json and css files as content
+      # In the future, use the list generated to build a logical content list
+      self.content_types = {"js":falcon.MEDIA_JS, "json":falcon.MEDIA_JSON, "css":"text/css"}
    ##
    # @fn    on_get(self, req, resp, script)
    #
@@ -133,13 +153,17 @@ class script:
    # @param     self    The class instance that this method operates on.
    # @param     req     The request.
    # @param     resp    The response.
-   # @param     script  The script to send.
+   # @param     content  The content to send.
 
-   def on_get(self, req, resp, script):
-    resp.content_type = falcon.MEDIA_JS
-    script_file = join(self.script_root,script)
-    with open(script_file,"r") as fp:
-      resp.text = fp.read()
+   def on_get(self, req, resp, content):
+    resp.content_type = self.content_types.get(content.split('.')[-1], falcon.MEDIA_TEXT) #falcon.MEDIA_JS
+    content_file = self.content_list.get(content,None)
+
+    if content_file is None:
+       resp.status = falcon.HTTP_404
+    else:
+       with open(content_file,"r") as fp:
+         resp.text = jsmin(fp.read())
 
 ##
 # @class    FaviconResource

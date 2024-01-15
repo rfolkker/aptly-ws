@@ -37,7 +37,9 @@ class Repo():
     def get_data(self):
         api_url = self.config.get("api").get("aptly_url")
         repo = api.Repo(api_url)
-        return repo.list() # _get(api_url)
+        repos = repo.list()
+            
+        return repos #repo.list() # _get(api_url)
 
 ##
 # @fn   main()

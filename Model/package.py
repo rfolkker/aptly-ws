@@ -35,11 +35,11 @@ class Package():
     # @returns   Will return a data dictionary to be used on the user page.
 
     def get_data(self):
-        return None
-        # api_url = self.config.get("api").get("aptly_url")
-        # TODO this is placeholder code until API is properly defined
-        # package_data = api.Package(api_url)
-        # return package_data.list() # _get(api_url)
+        api_url = self.config.get("api").get("aptly_url")
+        package = api.Package(api_url)
+        packages = package.list()
+            
+        return packages
 
 ##
 # @fn   main()
