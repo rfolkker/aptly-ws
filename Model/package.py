@@ -37,7 +37,7 @@ class Package():
     def get_data(self):
         api_url = self.config.get("api").get("aptly_url")
         package = api.Package(api_url)
-        packages = package.list()
+        packages = package.list({})
             
         return packages
 

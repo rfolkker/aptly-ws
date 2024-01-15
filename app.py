@@ -16,9 +16,10 @@ import falcon
 #Custom classes
 import renderer
 import config
-
+print("Loading Configuration")
 app_config = config.ConfigHandler("config.ini")
 
+print("Creating Routes")
 app = falcon.App()
 template = renderer.ui(app_config.config)
 api_handler = renderer.api(app_config.config)
@@ -38,7 +39,10 @@ app.add_route('/favicon.ico', favicon_handler)
 # @date 1/10/2024
 
 def main():
-   serve(app, host=app_config.config.get("ui").get("bind_address",'0.0.0.0'), port=int(app_config.config.get("ui").get("port",8080)))
+   host_url= app_config.config.get("ui").get("bind_address",'0.0.0.0')
+   host_port=int(app_config.config.get("ui").get("port",8080))
+   print(f"Starting server using {host_url}:{host_port}")
+   serve(app, host=host_url, port=host_port)
 
 if __name__ == '__main__':
     main()

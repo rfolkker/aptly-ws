@@ -223,14 +223,14 @@ class ui:
       self.path_root = self.config.get("page").get("templates", self.path_root)
       self.page_data = data.Data(config)
       self.template_env = Environment(loader=FileSystemLoader(self.path_root))
-
+      print("Loading template files:")
       for f in listdir(self.path_root):
          if isfile(join(self.path_root, f)) and f.endswith(".html"):
             print(f"{f} found")
             print("Creating dictionary item {}".format({f[:-5]: join(self.path_root, f)}))
             self.routes[f[:-5]] = join(self.path_root, f)
       # self.routes = {f[:-5]:join(self.path_root, f) for f in listdir(self.path_root) if isfile(join(self.path_root, f) and f.endswith(".html"))}
-
+      print("")
    ##
    # @fn    add_template(self, name, filename)
    #
