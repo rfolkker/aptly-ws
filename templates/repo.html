@@ -1,20 +1,60 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<table width="100%" border="1">
-  <tr>
-    <td class="c1">Name</td>
-    <td class="c2">Comment</td>
-    <td class="c3">Distribution</td>
-    <td class="c4">Component</td>
-  </tr>
-  {% for item in page_data %}
-  <TR>
-     <TD class="c1">{{item.Name}}</TD>
-     <TD class="c2">{{item.Comment}}</TD>
-     <TD class="c3"><SPAN>{{item.DefaultDistribution}}</SPAN></TD>
-     <TD class="c4"><SPAN>{{item.DefaultComponent}}</SPAN></TD>
-  </TR>
-  {% endfor %}
-  </table>
-  {% endblock %}
+<!-- Sidebar -->
+<div class="container-fluid">
+  <div class="row">
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            Aptly Repositories
+          </li>
+          {% for item in page_data %}
+          <li class="nav-item">
+            <a class="nav-link" id="nav_{{item.Name}}" onclick="handlenavClick('{{item.Name}}')" href="#"
+              data-toggle="tooltip" data-placement="right" title="{{item.DefaultComponent}}">
+              {{item.Name}}
+            </a>
+          </li>
+          {% endfor %}
+          <!-- Add more sidebar options as needed -->
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4" id="content">
+      <table id="clickableTable" class="packagelist-table table table-bordered  table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Architecture</th>
+            <th>Version</th>
+            <th>Hash</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div>
+        <div>
+          <h3>Package Details:</h3>
+        </div>
+        <div class="table-responsive">
+          <table id="packageDetails" class="description-table table table-bordered  table-striped">
+            <thead>
+              <tr>
+                <th width="20%">Property</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+<!-- Repo Scripts -->
+<script src="static/repopage.js" />
+{% endblock %}
