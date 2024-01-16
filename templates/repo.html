@@ -8,11 +8,12 @@
       <div class="sidebar-sticky">
         <ul class="nav flex-column">
           <li class="nav-item">
-              Aptly Repositories
+            Aptly Repositories
           </li>
           {% for item in page_data %}
           <li class="nav-item">
-            <a class="nav-link" id="nav_{{item.Name}}" onclick="handlenavClick('{{item.Name}}')" href="#" data-toggle="tooltip" data-placement="right" title="{{item.DefaultComponent}}">
+            <a class="nav-link" id="nav_{{item.Name}}" onclick="handlenavClick('{{item.Name}}')" href="#"
+              data-toggle="tooltip" data-placement="right" title="{{item.DefaultComponent}}">
               {{item.Name}}
             </a>
           </li>
@@ -36,20 +37,24 @@
         <tbody></tbody>
       </table>
       <div>
-        <div><h3>Package Details:</h3></div>
-        <table id="packageDetails" class="description-table table table-bordered  table-striped">
-          <thead>
-            <tr>
-              <th width="20%">Property</th>
-              <th>Value</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+        <div>
+          <h3>Package Details:</h3>
+        </div>
+        <div class="table-responsive">
+          <table id="packageDetails" class="description-table table table-bordered  table-striped">
+            <thead>
+              <tr>
+                <th width="20%">Property</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
       </div>
     </main>
   </div>
 </div>
 <!-- Repo Scripts -->
 <script src="static/repopage.js" />
-  {% endblock %}
+{% endblock %}

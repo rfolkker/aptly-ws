@@ -19,8 +19,8 @@
     
     Object.entries(data).forEach(([key, value]) => {
       const row = `<tr id="desc_${key}">
-                    <td>${key}</td>
-                    <td>${value}</td>
+                    <td><small>${key}</small></td>
+                    <td><small>${value}</small></td>
                   </tr>`;
       tbody.append(row);
     });
@@ -45,3 +45,12 @@
     });
   }
 
+  $(document).ready(function () {
+    $('#clickableTable tbody').on('click', 'tr', function () {
+      // Remove 'highlighted-row' class from all rows
+      $('#clickableTable tbody tr').removeClass('active');
+      
+      // Add 'highlighted-row' class to the clicked row
+      $(this).addClass('active');
+    });
+  });
