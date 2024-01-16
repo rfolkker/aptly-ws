@@ -3,7 +3,7 @@
 # @file aptly-ws/test_config.py.
 #
 # @brief    Test configuration class
-blah
+
 
 ##
 # @fn   test_config_placeholder()
